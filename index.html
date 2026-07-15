@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Sacos – 16/07/2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; background: #f0f0f0; }
+  .header { background: #fff; padding: 10px; text-align: center; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 10; }
+  h1 { font-size: 14px; text-transform: uppercase; margin-bottom: 6px; }
+  .abas { display: flex; gap: 4px; justify-content: center; }
+  .aba { flex: 1; padding: 8px 4px; font-size: 11px; font-weight: bold; background: #fff; border: 1px solid #ddd; border-radius: 6px 6px 0 0; cursor: pointer; color: #333; }
+  .aba.ativa { background: #f0f0f0; }
+  .aba-num { display: block; font-size: 10px; font-weight: normal; color: #666; margin-top: 2px; }
+  .painel { padding: 10px 10px 70px; }
+  .turno-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .turno-badge { padding: 4px 14px; border-radius: 4px; color: #fff; font-weight: bold; font-size: 12px; }
+  .turno-total { font-size: 11px; color: #555; }
+  .escola-card { background: #fff; border-radius: 6px; border: 1px solid #ddd; margin-bottom: 6px; padding: 8px 10px; }
+  .escola-nome { font-size: 12px; font-weight: bold; margin-bottom: 6px; padding-left: 6px; }
+  .sacos-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .saco-item { cursor: pointer; }
+  .saco-item input { display: none; }
+  .saco-box {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 46px; height: 46px; border-radius: 6px;
+    border: 2px solid #ccc; background: #f9f9f9;
+    font-size: 13px; font-weight: bold; color: #333;
+    transition: all 0.15s; user-select: none;
+  }
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: #fff; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .footer span { font-size: 14px; font-weight: bold; }
+  .btn-reset { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Checklist Sacos – Pão Francês 16/07</h1>
+  <div class="abas"><button class="aba" id="aba_mat" onclick="trocarAba('mat')" style="border-bottom:3px solid #1A7A3A">
+    MATUTINO <span class="aba-num" id="num_mat">0/108</span>
+  </button><button class="aba" id="aba_ves" onclick="trocarAba('ves')" style="border-bottom:3px solid #C47A00">
+    VESPERTINO <span class="aba-num" id="num_ves">0/20</span>
+  </button><button class="aba" id="aba_epj" onclick="trocarAba('epj')" style="border-bottom:3px solid #1F4E79">
+    EPJAI <span class="aba-num" id="num_epj">0/53</span>
+  </button></div>
+</div>
+
+
+  <div class="painel" id="painel_mat" style="display:none">
+    <div class="turno-header">
+      <span class="turno-badge" style="background:#1A7A3A">MATUTINO</span>
+      <span class="turno-total">108 sacos</span>
+    </div>
+    <div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Antônio Joaquim</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s1" data-key="mat_s1" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s2" data-key="mat_s2" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s3" data-key="mat_s3" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s4" data-key="mat_s4" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s5" data-key="mat_s5" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">20</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Bem-Me-Quer</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s6" data-key="mat_s6" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">20</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Bom Jesus da Lapa</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s7" data-key="mat_s7" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s8" data-key="mat_s8" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">36</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">João Evangelista</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s9" data-key="mat_s9" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">José Flaviano</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s10" data-key="mat_s10" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">29</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Justiniano P. Lajedo</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s11" data-key="mat_s11" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Juvêncio Lopes</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s12" data-key="mat_s12" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Luciano (KM10)</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s13" data-key="mat_s13" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Manoel J. Vitorino</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s14" data-key="mat_s14" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s15" data-key="mat_s15" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Maximiniano José</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s16" data-key="mat_s16" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s17" data-key="mat_s17" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">NAEPI</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s18" data-key="mat_s18" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s19" data-key="mat_s19" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Pedro Viola (Ves.)</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s20" data-key="mat_s20" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Rui Barbosa Junquinho</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s21" data-key="mat_s21" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s22" data-key="mat_s22" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">23</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s23" data-key="mat_s23" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">23</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Seriema</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s24" data-key="mat_s24" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s25" data-key="mat_s25" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s26" data-key="mat_s26" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Severiano Inácio</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s27" data-key="mat_s27" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s28" data-key="mat_s28" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s29" data-key="mat_s29" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Silvana Margarida</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s30" data-key="mat_s30" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s31" data-key="mat_s31" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s32" data-key="mat_s32" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s33" data-key="mat_s33" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">29</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Cândida Rosa</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s34" data-key="mat_s34" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s35" data-key="mat_s35" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s36" data-key="mat_s36" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s37" data-key="mat_s37" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s38" data-key="mat_s38" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s39" data-key="mat_s39" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Cândida Rosa Anexo</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s40" data-key="mat_s40" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s41" data-key="mat_s41" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Centro de E. Integral</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s42" data-key="mat_s42" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s43" data-key="mat_s43" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s44" data-key="mat_s44" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s45" data-key="mat_s45" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s46" data-key="mat_s46" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s47" data-key="mat_s47" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s48" data-key="mat_s48" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s49" data-key="mat_s49" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s50" data-key="mat_s50" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">36</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Edivaldo Machado</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s51" data-key="mat_s51" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s52" data-key="mat_s52" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s53" data-key="mat_s53" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s54" data-key="mat_s54" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s55" data-key="mat_s55" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s56" data-key="mat_s56" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s57" data-key="mat_s57" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s58" data-key="mat_s58" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s59" data-key="mat_s59" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s60" data-key="mat_s60" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s61" data-key="mat_s61" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s62" data-key="mat_s62" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Francisco Machado</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s63" data-key="mat_s63" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s64" data-key="mat_s64" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s65" data-key="mat_s65" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s66" data-key="mat_s66" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s67" data-key="mat_s67" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s68" data-key="mat_s68" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Osvaldo Farj</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s69" data-key="mat_s69" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s70" data-key="mat_s70" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s71" data-key="mat_s71" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s72" data-key="mat_s72" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">23</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s73" data-key="mat_s73" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">23</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Osvaldo V. Boas Anexo</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s74" data-key="mat_s74" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s75" data-key="mat_s75" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">32</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Otaviano Anexo</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s76" data-key="mat_s76" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s77" data-key="mat_s77" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s78" data-key="mat_s78" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Otaviano Ferreira</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s79" data-key="mat_s79" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s80" data-key="mat_s80" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s81" data-key="mat_s81" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s82" data-key="mat_s82" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s83" data-key="mat_s83" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s84" data-key="mat_s84" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s85" data-key="mat_s85" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Pedro Viola</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s86" data-key="mat_s86" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s87" data-key="mat_s87" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s88" data-key="mat_s88" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Tarcília Evangelista</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s89" data-key="mat_s89" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s90" data-key="mat_s90" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s91" data-key="mat_s91" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s92" data-key="mat_s92" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s93" data-key="mat_s93" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s94" data-key="mat_s94" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s95" data-key="mat_s95" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s96" data-key="mat_s96" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s97" data-key="mat_s97" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s98" data-key="mat_s98" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s99" data-key="mat_s99" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">29</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s100" data-key="mat_s100" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">29</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Vicente Moreira</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s101" data-key="mat_s101" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s102" data-key="mat_s102" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s103" data-key="mat_s103" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s104" data-key="mat_s104" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s105" data-key="mat_s105" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">20</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1A7A3A">Zulmira Rios Queiroz</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="mat_s106" data-key="mat_s106" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s107" data-key="mat_s107" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="mat_s108" data-key="mat_s108" data-turno="mat" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div>
+    <div style="height:60px"></div>
+  </div>
+  <div class="painel" id="painel_ves" style="display:none">
+    <div class="turno-header">
+      <span class="turno-badge" style="background:#C47A00">VESPERTINO</span>
+      <span class="turno-total">20 sacos</span>
+    </div>
+    <div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">João Evangelista</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s1" data-key="ves_s1" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">Silvana Margarida</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s2" data-key="ves_s2" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s3" data-key="ves_s3" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">35</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">Cândida Rosa</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s4" data-key="ves_s4" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s5" data-key="ves_s5" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s6" data-key="ves_s6" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s7" data-key="ves_s7" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">Cândida Rosa Anexo</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s8" data-key="ves_s8" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s9" data-key="ves_s9" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">Edivaldo Machado</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s10" data-key="ves_s10" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s11" data-key="ves_s11" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">23</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s12" data-key="ves_s12" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">22</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">NAEPI</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s13" data-key="ves_s13" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s14" data-key="ves_s14" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #C47A00">Otaviano Ferreira</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="ves_s15" data-key="ves_s15" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s16" data-key="ves_s16" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s17" data-key="ves_s17" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s18" data-key="ves_s18" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s19" data-key="ves_s19" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="ves_s20" data-key="ves_s20" data-turno="ves" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div>
+    <div style="height:60px"></div>
+  </div>
+  <div class="painel" id="painel_epj" style="display:none">
+    <div class="turno-header">
+      <span class="turno-badge" style="background:#1F4E79">EPJAI</span>
+      <span class="turno-total">53 sacos</span>
+    </div>
+    <div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Antônio Joaquim</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s1" data-key="epj_s1" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s2" data-key="epj_s2" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">21</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s3" data-key="epj_s3" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">21</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Bem Me Quer</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s4" data-key="epj_s4" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">33</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Bom Jesus</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s5" data-key="epj_s5" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">42</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">José Flaviano</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s6" data-key="epj_s6" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Justiniano (Lagedo)</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s7" data-key="epj_s7" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s8" data-key="epj_s8" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">37</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Juvêncio</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s9" data-key="epj_s9" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Luciano (KM10)</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s10" data-key="epj_s10" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">29</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s11" data-key="epj_s11" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Manoel José Vitórino</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s12" data-key="epj_s12" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s13" data-key="epj_s13" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">20</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Maximiniano</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s14" data-key="epj_s14" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Pedro Viola</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s15" data-key="epj_s15" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s16" data-key="epj_s16" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">25</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Seriema</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s17" data-key="epj_s17" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">22</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Silvana Margarida</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s18" data-key="epj_s18" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s19" data-key="epj_s19" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Associação</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s20" data-key="epj_s20" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Cândida Rosa</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s21" data-key="epj_s21" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s22" data-key="epj_s22" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">20</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Edivaldo Machado</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s23" data-key="epj_s23" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s24" data-key="epj_s24" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s25" data-key="epj_s25" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s26" data-key="epj_s26" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s27" data-key="epj_s27" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s28" data-key="epj_s28" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s29" data-key="epj_s29" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s30" data-key="epj_s30" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s31" data-key="epj_s31" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Faz. Capitão</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s32" data-key="epj_s32" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">46</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">José de Oliveira</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s33" data-key="epj_s33" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">KM2</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s34" data-key="epj_s34" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">23</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Polo-SENAI</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s35" data-key="epj_s35" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Polo-UPT</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s36" data-key="epj_s36" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Tarcília Evangelista</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s37" data-key="epj_s37" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s38" data-key="epj_s38" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s39" data-key="epj_s39" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s40" data-key="epj_s40" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s41" data-key="epj_s41" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s42" data-key="epj_s42" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s43" data-key="epj_s43" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s44" data-key="epj_s44" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s45" data-key="epj_s45" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">26</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s46" data-key="epj_s46" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">26</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Tigre</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s47" data-key="epj_s47" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">35</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Vicente Moreira</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s48" data-key="epj_s48" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">40</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s49" data-key="epj_s49" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">22</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s50" data-key="epj_s50" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">22</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Zulmira Anexo</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s51" data-key="epj_s51" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">30</span>
+      </label></div>
+    </div><div class="escola-card">
+      <div class="escola-nome" style="border-left:3px solid #1F4E79">Zulmira Rios Queiroz</div>
+      <div class="sacos-row"><label class="saco-item">
+        <input type="checkbox" id="epj_s52" data-key="epj_s52" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">28</span>
+      </label><label class="saco-item">
+        <input type="checkbox" id="epj_s53" data-key="epj_s53" data-turno="epj" onchange="salvar(this)">
+        <span class="saco-box">27</span>
+      </label></div>
+    </div>
+    <div style="height:60px"></div>
+  </div>
+
+<div class="footer">
+  <span id="prog_atual">0 / 0</span>
+  <button class="btn-reset" onclick="resetarAtual()">Limpar turno</button>
+</div>
+
+<script>
+  const TOTAIS = { mat: 108, ves: 20, epj: 53 };
+  let abaAtual = 'mat';
+
+  function trocarAba(id) {
+    document.querySelectorAll('.painel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
+    document.getElementById('painel_' + id).style.display = 'block';
+    document.getElementById('aba_' + id).classList.add('ativa');
+    abaAtual = id;
+    atualizarProg(id);
+  }
+
+  function salvar(cb) {
+    const dados = JSON.parse(localStorage.getItem('checklist_16jul') || '{}');
+    dados[cb.dataset.key] = cb.checked;
+    localStorage.setItem('checklist_16jul', JSON.stringify(dados));
+    atualizarProg(cb.dataset.turno);
+    atualizarNumAba(cb.dataset.turno);
+  }
+
+  function atualizarProg(id) {
+    const marcados = document.querySelectorAll('#painel_' + id + ' input:checked').length;
+    document.getElementById('prog_atual').textContent = marcados + ' / ' + TOTAIS[id];
+    // Cor da footer
+    const cores = { mat: '#1A7A3A', ves: '#C47A00', epj: '#1F4E79' };
+    document.querySelector('.footer').style.background = cores[id];
+  }
+
+  function atualizarNumAba(id) {
+    const marcados = document.querySelectorAll('#painel_' + id + ' input:checked').length;
+    document.getElementById('num_' + id).textContent = marcados + '/' + TOTAIS[id];
+  }
+
+  function resetarAtual() {
+    if (!confirm('Limpar ' + abaAtual.toUpperCase() + '?')) return;
+    const dados = JSON.parse(localStorage.getItem('checklist_16jul') || '{}');
+    document.querySelectorAll('#painel_' + abaAtual + ' input').forEach(cb => {
+      cb.checked = false;
+      delete dados[cb.dataset.key];
+    });
+    localStorage.setItem('checklist_16jul', JSON.stringify(dados));
+    atualizarProg(abaAtual);
+    atualizarNumAba(abaAtual);
+  }
+
+  // Carregar estado salvo
+  window.addEventListener('DOMContentLoaded', () => {
+    const dados = JSON.parse(localStorage.getItem('checklist_16jul') || '{}');
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      if (dados[cb.dataset.key]) cb.checked = true;
+    });
+    ['mat','ves','epj'].forEach(id => atualizarNumAba(id));
+    trocarAba('mat');
+  });
+</script>
+</body>
+</html>
